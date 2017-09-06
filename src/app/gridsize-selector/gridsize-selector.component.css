@@ -1,0 +1,9 @@
+#gridSelection{
+    display: flex;
+    align-items: center;
+}
+
+#gridSizeSelect{
+    width: 100px;
+    margin-left: 20px;
+}

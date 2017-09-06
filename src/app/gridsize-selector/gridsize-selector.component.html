@@ -1,0 +1,7 @@
+<div id="gridSelection">
+  <div>Select your game grid size:</div>
+  <select id="gridSizeSelect" (change)="onGridSizeChange($event)" [(ngModel)]="selectedGridSize" disabled>
+    <option *ngFor="let numOption of gridOptions" [value]="numOption">{{numOption}}</option>
+  </select>
+</div>
+

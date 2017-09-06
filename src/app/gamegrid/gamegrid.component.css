@@ -1,0 +1,18 @@
+.gameRow{
+    height: 24px;
+}
+
+.gameCell{
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-color: white;
+    border: 1px solid black;
+}
+
+.gameCell {
+    color: darkgreen;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
