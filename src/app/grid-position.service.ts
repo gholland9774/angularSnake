@@ -32,7 +32,7 @@ export class GridPositionService {
     }
 
     if (newSnakePosition[0][0] < 0 || newSnakePosition[0][1] < 0 || newSnakePosition[0][0] >= gridSize || newSnakePosition[0][1] >= gridSize){
-      alert ('You a dead ass snake');
+      alert ('You are dead');
     }
 
     for (let i=1; i<oldSnakePosition.length; i++){

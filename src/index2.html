@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<script>
+
+  class Calculator {
+    add(x, y) {
+      return x + y;
+    }
+
+    subtract(x,y){
+      return x-y;
+    }
+
+    multiply(x,y) {
+      return x*y;
+    }
+
+    divide(x,y) {
+      if (y===0){
+        return NaN;
+      }
+      return x/y;
+    }
+  }
+
+  class ScientificCalculator extends Calculator{
+    sin(x) {
+      return Math.sin(x);
+    }
+    cos(x) {
+      return Math.cos(x);
+    }
+    tan(x) {
+      return Math.tan(x);
+    }
+    log(x) {
+      return Math.log(x);
+    }
+  }
+
+  var calculator = new Calculator();
+
+  console.log(calculator.add(2,4));
+  console.log(calculator.subtract(4,2));
+  console.log(calculator.multiply(4,2));
+  console.log(calculator.divide(10,2));
+  console.log(calculator.divide(10,0));
+
+  var sciCalc = new ScientificCalculator();
+
+  console.log(sciCalc instanceof Calculator);
+  console.log(sciCalc instanceof ScientificCalculator);
+
+  console.log(sciCalc.sin(Math.PI / 2));
+  console.log(sciCalc.cos(Math.PI));
+  console.log(sciCalc.tan(0));
+  console.log(sciCalc.log(1));
+
+
+
+</script>
+
+</body>
+</html>

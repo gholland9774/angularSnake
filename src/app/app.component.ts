@@ -10,24 +10,41 @@ import { GridPositionService } from './grid-position.service'
     <h1>
       {{title}}
     </h1>
-    
-    <app-gridsize-selector
-        class="gridsizeSelector"
-        [gridOptions]="gridOptions"
-        [(selectedGridSize)]="selectedGridSize"
-        [selectorEnabled]="gameInProgress"
-    ></app-gridsize-selector>
-    
+    <!--<app-gridsize-selector-->
+        <!--class="gridsizeSelector"-->
+        <!--[gridOptions]="gridOptions"-->
+        <!--[(selectedGridSize)]="selectedGridSize"-->
+        <!--[selectorEnabled]="gameInProgress"-->
+    <!--&gt;</app-gridsize-selector>-->
     <app-gamegrid
         class="gameGrid"
         [gridSize]="selectedGridSize"
         [newSnakePosition]="snakePosition"
         [foodPosition]="foodPosition">
     </app-gamegrid>
-    
     <div id="startButton">Press any arrow key to start the game</div>
   `,
-  styleUrls: ['./app.component.css'],
+  styles: [`
+    .gridsizeSelector{
+        display: block;
+    }
+    
+    .gameGrid {
+        margin-top: 40px;
+    }
+    
+    #startButton{
+        width: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 40px;
+        background-color: white;
+        color: #999999;
+        border-radius: 4px;
+        padding: 20px;
+    }
+  `],
   host: {
     '(document:keydown)': 'handleKeyboardEvent($event)'
   }
@@ -35,13 +52,13 @@ import { GridPositionService } from './grid-position.service'
 export class AppComponent {
   title = 'Classic Snake Game!';
   gridOptions = [10, 15, 20, 25, 30];
-  selectedGridSize = 10;
+  selectedGridSize = 20;
   direction:string = null;
   gameInProgress:boolean = false;
   snakePosition: any[] = [];
-  foodPosition: number[] = [];
+  foodPosition: number[] = [1,1];
   gridPositionService: GridPositionService = new GridPositionService();
-  gameTimer: Subscription
+  gameTimer: Subscription;
 
 
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -90,5 +107,6 @@ export class AppComponent {
 
   handleTick(t):void {
     this.snakePosition = this.gridPositionService.getNextSnakePosition(this.snakePosition, this.direction, this.selectedGridSize);
+
   }
 }

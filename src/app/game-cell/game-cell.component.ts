@@ -20,6 +20,9 @@ import { Component, Input, OnInit, OnChanges, SimpleChange, SimpleChanges } from
         .body {
             background-color: greenyellow;
         }
+        .food {
+            background-color: saddlebrown;
+        }
     `],
     template: `
       <div class="gameCellUnit {{gridStyle}}">
@@ -42,6 +45,9 @@ export class GameCell implements OnChanges {
         }
         else if (this.cellContent == 1) {
             this.gridStyle = "body";
+        }
+        else if (this.cellContent == 3) {
+            this.gridStyle = "food";
         }
         else {
             this.gridStyle = "blank";
