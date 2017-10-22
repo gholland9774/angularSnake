@@ -1,6 +1,19 @@
+.gameOverDiv{
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.scoreMessage{
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
 .scoreInput{
     display: inline-block;
-    width: 200px;
+    width: 300px;
     border: 1px solid #999;
     border-radius: 4px;
     padding: 8px 8px 7px 8px;
@@ -11,9 +24,9 @@
     margin-top: 20px;
 }
 
-.submitButton {
-    width: 200px;
-    padding: 20px;
+.gameOverButton {
+    width: 240px;
+    height: 40px;
     font-size: 18px;
     background-color: black;
     color: white;
@@ -23,4 +36,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.gameOverSection{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

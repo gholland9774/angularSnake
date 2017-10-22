@@ -7,15 +7,7 @@ import { GridPositionService } from '../grid-position.service';
 @Component({
     selector: 'app-game-board',
     styleUrls: ['./game-board.component.css'],
-    template: `
-      <div>Score: {{score}}</div>
-      <app-gamegrid
-        class="gameGrid"
-        [gridSize]="gridSize"
-        [newSnakePosition]="snakePosition"
-        [foodPosition]="foodPosition">
-      </app-gamegrid>
-    `,
+    templateUrl: './game-board.component.html',
     host: {
         '(document:keydown)': 'handleKeyboardEvent($event)'
     }
@@ -34,40 +26,42 @@ export class GameBoardComponent implements OnInit {
     foodPosition: number[] = [1, 4];
     gameTimer: Subscription;
     timerTime: number = 200;
-    timerMultiple: number = 0.97;
+    timerMultiple: number = 0.98;
+    fastestTime: number = 90;
     score:number = 0;
 
     ngOnInit() {
-        console.log('initialize game board');
     }
 
     handleKeyboardEvent(event: KeyboardEvent) {
-        if (!this.gameInProgress) {
-            this.snakePosition = this.gridPositionService.getInitialSnakePosition(this.gridSize);
-            this.gameInProgress = true;
-            this.startGame();
-        }
-        switch (event.key) {
-            case 'ArrowUp':
-                if (this.direction !== "D") {
-                    this.direction = "U";
-                }
-                break;
-            case 'ArrowDown':
-                if (this.direction !== "U") {
-                    this.direction = "D";
-                }
-                break;
-            case 'ArrowLeft':
-                if (this.direction !== "R") {
-                    this.direction = "L";
-                }
-                break;
-            case 'ArrowRight':
-                if (this.direction !== "L") {
-                    this.direction = "R";
-                }
-                break;
+        if (event.key == 'ArrowUp' || event.key == "ArrowDown" || event.key == 'ArrowRight' || event.key == 'ArrowLeft'){
+            if (!this.gameInProgress) {
+                this.snakePosition = this.gridPositionService.getInitialSnakePosition(this.gridSize);
+                this.gameInProgress = true;
+                this.startGame();
+            }
+            switch (event.key) {
+                case 'ArrowUp':
+                    if (this.direction !== "D") {
+                        this.direction = "U";
+                    }
+                    break;
+                case 'ArrowDown':
+                    if (this.direction !== "U") {
+                        this.direction = "D";
+                    }
+                    break;
+                case 'ArrowLeft':
+                    if (this.direction !== "R") {
+                        this.direction = "L";
+                    }
+                    break;
+                case 'ArrowRight':
+                    if (this.direction !== "L") {
+                        this.direction = "R";
+                    }
+                    break;
+            }
         }
     }
 
@@ -89,7 +83,6 @@ export class GameBoardComponent implements OnInit {
 
         if (collisionCheck) {
             this.gameTimer.unsubscribe();
-            alert ('you died with a score of ' + this.score);
             this.router.navigateByUrl('/gameOver/' + this.score);
         }
         else {
@@ -98,8 +91,10 @@ export class GameBoardComponent implements OnInit {
             if (hitFood) {
                 this.score += 10;
                 this.foodPosition = this.gridPositionService.getNewFoodPosition(this.snakePosition, this.gridSize)
-                this.snakePosition.push(oldSnakePosition[oldSnakePosition.length - 1])
-                this.speedUp();
+                this.snakePosition.push(oldSnakePosition[oldSnakePosition.length - 1]);
+                if (this.timerTime > this.fastestTime) {
+                    this.speedUp();
+                }
             }
         }
 

@@ -1,0 +1,49 @@
+.leaderBoard{
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.leaderBoardTitle{
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+.leaderBoardRow {
+    width: 600px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.leaderBoardName{
+    width: 50%;
+}
+
+.leaderBoardAge{
+    width: 15%;
+    text-align: center;
+}
+
+.leaderBoardScore{
+    width: 15%;
+
+    text-align: center;
+}
+
+#tryButton {
+    width: 200px;
+    height: 40px;
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}

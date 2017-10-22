@@ -12,7 +12,7 @@ import { Component, Input, OnInit, OnChanges, SimpleChange, SimpleChanges } from
             justify-content: center;    
         }
         .blank {
-            background-color: lightblue;
+            background-color: #ddd;
         }
         .head {
             background-color: darkgreen;

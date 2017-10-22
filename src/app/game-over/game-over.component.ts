@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ScoreDataService} from '../score-data-service.service'
 
 @Component({
@@ -10,6 +10,7 @@ import {ScoreDataService} from '../score-data-service.service'
 export class GameOverComponent implements OnInit {
 
     constructor(private route: ActivatedRoute,
+                private router: Router,
                 private scoreDataService: ScoreDataService) {
     }
 
@@ -17,8 +18,8 @@ export class GameOverComponent implements OnInit {
     lowestHighScore: number = 0;
     isInTopTen: boolean = false;
 
-    name:string = "Test score";
-    age: number = 100;
+    name:string = "";
+    age: number;
 
     ngOnInit() {
         this.score = this.route.snapshot.params['score'];
@@ -37,17 +38,22 @@ export class GameOverComponent implements OnInit {
     }
 
     compareScore() {
-        console.log(this.score, this.lowestHighScore);
         this.isInTopTen = this.score > this.lowestHighScore;
     }
 
     submitScore() {
-        console.log('submit score');
-
         this.scoreDataService.postScore(this.name, this.age, this.score)
             .subscribe(data=> {
-                console.log(data);
+                this.router.navigateByUrl('/highScores');
             })
+    }
+
+    playAgain() {
+        this.router.navigateByUrl('/play');
+    }
+
+    backToLeaderboard() {
+        this.router.navigateByUrl('/highScores');
     }
 
 }

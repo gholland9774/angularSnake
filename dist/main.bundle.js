@@ -43,8 +43,8 @@ var ScoreDataService = (function () {
     ScoreDataService.prototype.postScore = function (name, age, score) {
         var body = {
             name: name,
-            age: age,
-            score: score
+            age: Number(age),
+            score: Number(score)
         };
         return this.http
             .post(this.submitHighScore, body)
@@ -118,7 +118,6 @@ var GridPositionService = (function () {
         var newFoodPosition = [];
         newFoodPosition[0] = Math.floor(Math.random() * gridSize);
         newFoodPosition[1] = Math.floor(Math.random() * gridSize);
-        console.log(newFoodPosition);
         return newFoodPosition;
     };
     GridPositionService.prototype.collisionCheck = function (snakePosition, gridSize) {
@@ -329,39 +328,41 @@ var GameBoardComponent = (function () {
         this.snakePosition = [];
         this.foodPosition = [1, 4];
         this.timerTime = 200;
-        this.timerMultiple = 0.97;
+        this.timerMultiple = 0.98;
+        this.fastestTime = 90;
         this.score = 0;
     }
     GameBoardComponent.prototype.ngOnInit = function () {
-        console.log('initialize game board');
     };
     GameBoardComponent.prototype.handleKeyboardEvent = function (event) {
-        if (!this.gameInProgress) {
-            this.snakePosition = this.gridPositionService.getInitialSnakePosition(this.gridSize);
-            this.gameInProgress = true;
-            this.startGame();
-        }
-        switch (event.key) {
-            case 'ArrowUp':
-                if (this.direction !== "D") {
-                    this.direction = "U";
-                }
-                break;
-            case 'ArrowDown':
-                if (this.direction !== "U") {
-                    this.direction = "D";
-                }
-                break;
-            case 'ArrowLeft':
-                if (this.direction !== "R") {
-                    this.direction = "L";
-                }
-                break;
-            case 'ArrowRight':
-                if (this.direction !== "L") {
-                    this.direction = "R";
-                }
-                break;
+        if (event.key == 'ArrowUp' || event.key == "ArrowDown" || event.key == 'ArrowRight' || event.key == 'ArrowLeft') {
+            if (!this.gameInProgress) {
+                this.snakePosition = this.gridPositionService.getInitialSnakePosition(this.gridSize);
+                this.gameInProgress = true;
+                this.startGame();
+            }
+            switch (event.key) {
+                case 'ArrowUp':
+                    if (this.direction !== "D") {
+                        this.direction = "U";
+                    }
+                    break;
+                case 'ArrowDown':
+                    if (this.direction !== "U") {
+                        this.direction = "D";
+                    }
+                    break;
+                case 'ArrowLeft':
+                    if (this.direction !== "R") {
+                        this.direction = "L";
+                    }
+                    break;
+                case 'ArrowRight':
+                    if (this.direction !== "L") {
+                        this.direction = "R";
+                    }
+                    break;
+            }
         }
     };
     GameBoardComponent.prototype.startGame = function () {
@@ -380,7 +381,6 @@ var GameBoardComponent = (function () {
         var collisionCheck = this.gridPositionService.collisionCheck(newSnakePosition, this.gridSize);
         if (collisionCheck) {
             this.gameTimer.unsubscribe();
-            alert('you died with a score of ' + this.score);
             this.router.navigateByUrl('/gameOver/' + this.score);
         }
         else {
@@ -390,7 +390,9 @@ var GameBoardComponent = (function () {
                 this.score += 10;
                 this.foodPosition = this.gridPositionService.getNewFoodPosition(this.snakePosition, this.gridSize);
                 this.snakePosition.push(oldSnakePosition[oldSnakePosition.length - 1]);
-                this.speedUp();
+                if (this.timerTime > this.fastestTime) {
+                    this.speedUp();
+                }
             }
         }
     };
@@ -403,7 +405,7 @@ var GameBoardComponent = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'app-game-board',
             styles: [__webpack_require__(714)],
-            template: "\n      <div>Score: {{score}}</div>\n      <app-gamegrid\n        class=\"gameGrid\"\n        [gridSize]=\"gridSize\"\n        [newSnakePosition]=\"snakePosition\"\n        [foodPosition]=\"foodPosition\">\n      </app-gamegrid>\n    ",
+            template: __webpack_require__(719),
             host: {
                 '(document:keydown)': 'handleKeyboardEvent($event)'
             }
@@ -463,7 +465,7 @@ var GameCell = (function () {
     GameCell = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'game-cell',
-            styles: ["\n        .gameCellUnit{\n            width: 100%;\n            height: 100%;\n            background-color: lightblue;\n            display: flex;\n            align-items: center;\n            justify-content: center;    \n        }\n        .blank {\n            background-color: lightblue;\n        }\n        .head {\n            background-color: darkgreen;\n        }\n        .body {\n            background-color: greenyellow;\n        }\n        .food {\n            background-color: saddlebrown;\n        }\n    "],
+            styles: ["\n        .gameCellUnit{\n            width: 100%;\n            height: 100%;\n            background-color: lightblue;\n            display: flex;\n            align-items: center;\n            justify-content: center;    \n        }\n        .blank {\n            background-color: #ddd;\n        }\n        .head {\n            background-color: darkgreen;\n        }\n        .body {\n            background-color: greenyellow;\n        }\n        .food {\n            background-color: saddlebrown;\n        }\n    "],
             template: "\n      <div class=\"gameCellUnit {{gridStyle}}\">\n      </div>\n    ",
         }), 
         __metadata('design:paramtypes', [])
@@ -495,14 +497,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var GameOverComponent = (function () {
-    function GameOverComponent(route, scoreDataService) {
+    function GameOverComponent(route, router, scoreDataService) {
         this.route = route;
+        this.router = router;
         this.scoreDataService = scoreDataService;
         this.score = 0;
         this.lowestHighScore = 0;
         this.isInTopTen = false;
-        this.name = "Test score";
-        this.age = 100;
+        this.name = "";
     }
     GameOverComponent.prototype.ngOnInit = function () {
         this.score = this.route.snapshot.params['score'];
@@ -520,26 +522,31 @@ var GameOverComponent = (function () {
         });
     };
     GameOverComponent.prototype.compareScore = function () {
-        console.log(this.score, this.lowestHighScore);
         this.isInTopTen = this.score > this.lowestHighScore;
     };
     GameOverComponent.prototype.submitScore = function () {
-        console.log('submit score');
+        var _this = this;
         this.scoreDataService.postScore(this.name, this.age, this.score)
             .subscribe(function (data) {
-            console.log(data);
+            _this.router.navigateByUrl('/highScores');
         });
+    };
+    GameOverComponent.prototype.playAgain = function () {
+        this.router.navigateByUrl('/play');
+    };
+    GameOverComponent.prototype.backToLeaderboard = function () {
+        this.router.navigateByUrl('/highScores');
     };
     GameOverComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'app-game-over',
-            template: __webpack_require__(719),
+            template: __webpack_require__(720),
             styles: [__webpack_require__(715)]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__score_data_service_service__["a" /* ScoreDataService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__score_data_service_service__["a" /* ScoreDataService */]) === 'function' && _b) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__score_data_service_service__["a" /* ScoreDataService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__score_data_service_service__["a" /* ScoreDataService */]) === 'function' && _c) || Object])
     ], GameOverComponent);
     return GameOverComponent;
-    var _a, _b;
+    var _a, _b, _c;
 }());
 //# sourceMappingURL=/Users/gholland/Documents/Playground/Angular/angularSnake/src/game-over.component.js.map
 
@@ -742,7 +749,7 @@ var HighScoresComponent = (function () {
     HighScoresComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'app-high-scores',
-            template: __webpack_require__(720),
+            template: __webpack_require__(721),
             styles: [__webpack_require__(718)]
         }), 
         __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__score_data_service_service__["a" /* ScoreDataService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__score_data_service_service__["a" /* ScoreDataService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* Router */]) === 'function' && _b) || Object])
@@ -773,21 +780,21 @@ var environment = {
 /***/ 714:
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ".gameBoardDiv{\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n\n.scoreDisplay{\n    font-size: 24px;\n    margin-bottom: 15px;\n}"
 
 /***/ }),
 
 /***/ 715:
 /***/ (function(module, exports) {
 
-module.exports = ".scoreInput{\n    display: inline-block;\n    width: 200px;\n    border: 1px solid #999;\n    border-radius: 4px;\n    padding: 8px 8px 7px 8px;\n    font-size: 18px;\n    color: #777;\n}\n.inputRow{\n    margin-top: 20px;\n}\n\n.submitButton {\n    width: 200px;\n    padding: 20px;\n    font-size: 18px;\n    background-color: black;\n    color: white;\n    border-radius: 6px;\n    margin-top: 30px;\n    cursor: pointer;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}"
+module.exports = ".gameOverDiv{\n    width: 600px;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: start;\n        -ms-flex-pack: start;\n            justify-content: flex-start;\n}\n\n.scoreMessage{\n    font-size: 24px;\n    margin-bottom: 30px;\n}\n\n.scoreInput{\n    display: inline-block;\n    width: 300px;\n    border: 1px solid #999;\n    border-radius: 4px;\n    padding: 8px 8px 7px 8px;\n    font-size: 18px;\n    color: #777;\n}\n.inputRow{\n    margin-top: 20px;\n}\n\n.gameOverButton {\n    width: 240px;\n    height: 40px;\n    font-size: 18px;\n    background-color: black;\n    color: white;\n    border-radius: 6px;\n    margin-top: 30px;\n    cursor: pointer;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n\n.gameOverSection{\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}"
 
 /***/ }),
 
 /***/ 716:
 /***/ (function(module, exports) {
 
-module.exports = ".gameRow{\n    height: 24px;\n}\n\n.gameCell{\n    width: 24px;\n    height: 24px;\n    display: inline-block;\n    background-color: white;\n    border: 1px solid black;\n}\n\n.gameCell {\n    color: darkgreen;\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}"
+module.exports = ".gameRow{\n    height: 24px;\n}\n\n.gameCell{\n    width: 24px;\n    height: 24px;\n    display: inline-block;\n    background-color: white;\n    border: 1px solid #333;\n    border-collapse:collapse;\n}\n\n.gameCell {\n    color: darkgreen;\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}"
 
 /***/ }),
 
@@ -801,25 +808,32 @@ module.exports = "#gridSelection{\n    display: -webkit-box;\n    display: -ms-f
 /***/ 718:
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = ".leaderBoard{\n    width: 600px;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: start;\n        -ms-flex-pack: start;\n            justify-content: flex-start;\n}\n\n.leaderBoardTitle{\n    font-size: 24px;\n    font-weight: 500;\n    margin-bottom: 30px;\n}\n\n.leaderBoardRow {\n    width: 600px;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n    margin-bottom: 10px;\n}\n\n.leaderBoardName{\n    width: 50%;\n}\n\n.leaderBoardAge{\n    width: 15%;\n    text-align: center;\n}\n\n.leaderBoardScore{\n    width: 15%;\n\n    text-align: center;\n}\n\n#tryButton {\n    width: 200px;\n    height: 40px;\n    background-color: black;\n    color: white;\n    font-size: 20px;\n    border-radius: 6px;\n    cursor: pointer;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    margin-top: 30px;\n}"
 
 /***/ }),
 
 /***/ 719:
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  Game Over! You got a score of {{score}}\n</p>\n\n<div *ngIf=\"isInTopTen\">\n  Congrats, you are in the top ten\n  Please enter your information below to record your score:\n  <div class=\"inputRow\">\n    <input [(ngModel)]=\"name\" #ctrl=\"ngModel\" required class=\"scoreInput\">\n  </div>\n  <div class=\"inputRow\">\n    <input [(ngModel)]=\"age\" #ctrl=\"ngModel\" required type=\"number\" class=\"scoreInput\">\n  </div>\n  <div class=\"submitButton\" (click)=\"submitScore()\">Submit Score</div>\n</div>\n\n<div *ngIf=\"!isInTopTen\">\n  Sorry, you didn't score high enough for the top ten!\n</div>"
+module.exports = "<div class=\"gameBoardDiv\">\n  <div class=\"scoreDisplay\" *ngIf=\"gameInProgress\">Score: {{score}}</div>\n  <div class=\"scoreDisplay\" *ngIf=\"!gameInProgress\">Prss any of the arrow buttons to begin</div>\n  <app-gamegrid\n      class=\"gameGrid\"\n      [gridSize]=\"gridSize\"\n      [newSnakePosition]=\"snakePosition\"\n      [foodPosition]=\"foodPosition\">\n  </app-gamegrid>\n</div>\n"
 
 /***/ }),
 
 /***/ 720:
 /***/ (function(module, exports) {
 
-module.exports = "<h1>\n  Top ten scores\n\n  <div *ngFor=\"let score of highScores; let i = index\">\n    {{i+1}}.)  {{score.name}}...{{score.age}}...{{score.score}}\n  </div>\n\n  <div (click)=\"playGame()\">Try your skill</div>\n\n</h1>\n"
+module.exports = "\n<div class=\"gameOverDiv\">\n  <div class=\"scoreMessage\">\n    Game Over! You got a score of {{score}}\n  </div>\n  <div *ngIf=\"isInTopTen\" class=\"gameOverSection\">\n    Congrats, you are in the top ten\n    Please enter your information below to record your score:\n    <div class=\"inputRow\">\n      <input [(ngModel)]=\"name\" #ctrl=\"ngModel\" required class=\"scoreInput\" placeholder=\"Enter your name\">\n    </div>\n    <div class=\"inputRow\">\n      <input [(ngModel)]=\"age\" #ctrl=\"ngModel\" required type=\"number\" class=\"scoreInput\" placeholder=\"Enter your age\">\n    </div>\n    <div class=\"gameOverButton\" (click)=\"submitScore()\">Submit Score</div>\n  </div>\n\n  <div *ngIf=\"!isInTopTen\" class=\"gameOverSection\">\n    Sorry, you didn't score high enough for the top ten!\n    <div class=\"gameOverButton\" (click)=\"playAgain()\">Try again</div>\n    <div class=\"gameOverButton\" (click)=\"backToLeaderboard()\">Back to Leaderboard</div>\n  </div>\n</div>\n"
 
 /***/ }),
 
-/***/ 991:
+/***/ 721:
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"leaderBoard\">\n  <div class=\"leaderBoardTitle\">Snake Leaderboard:</div>\n\n  <div class=\"leaderBoardRow\">\n    <div class=\"leaderBoardName\">Name</div>\n    <div class=\"leaderBoardAge\">Age</div>\n    <div class=\"leaderBoardScore\">Score</div>\n  </div>\n\n  <div *ngFor=\"let score of highScores; let i = index\" class=\"leaderBoardRow\">\n    <div class=\"leaderBoardName\">{{i+1}}.) {{score.name}}</div>\n    <div class=\"leaderBoardAge\">{{score.age}}</div>\n    <div class=\"leaderBoardScore\">{{score.score}}</div>\n  </div>\n\n  <div (click)=\"playGame()\" id=\"tryButton\">Try your skill</div>\n</div>\n"
+
+/***/ }),
+
+/***/ 992:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(433);
@@ -827,5 +841,5 @@ module.exports = __webpack_require__(433);
 
 /***/ })
 
-},[991]);
+},[992]);
 //# sourceMappingURL=main.bundle.map

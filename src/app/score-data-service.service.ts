@@ -24,8 +24,8 @@ export class ScoreDataService {
   postScore(name:string, age: number, score: number):  Observable<Object>{
     let body = {
       name: name,
-      age: age,
-      score: score
+      age: Number(age),
+      score: Number(score)
     };
     return this.http
         .post(this.submitHighScore, body)

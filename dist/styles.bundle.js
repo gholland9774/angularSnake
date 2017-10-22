@@ -9,7 +9,7 @@ webpackJsonp([2,4],{
 var content = __webpack_require__(711);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(989)(content, {});
+var update = __webpack_require__(990)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -32,10 +32,10 @@ if(false) {
 
 exports = module.exports = __webpack_require__(712)();
 // imports
-exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Patua+One);", ""]);
+exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Poppins:300,500,700);", ""]);
 
 // module
-exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n\nbody{\n    background-color: #333333;\n    padding: 0px;\n    margin: 0px;\n    font-family: 'Patua One', cursive;\n}\n\n.appRoot{\n    width: 960px;\n    margin: 0 auto;\n    background-color: #999999;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    color: white;\n    padding: 20px;\n    border-right: 2px solid white;\n    border-left: 2px solid white;\n    border-bottom: 2px solid white;\n    min-height: 600px;\n}\n\n", ""]);
+exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n\nbody{\n    background-color: #333333;\n    padding: 0px;\n    margin: 0px;\n    font-family: 'Poppins', sans-serif;\n    font-weight: 300;\n}\n\n.appRoot{\n    width: 960px;\n    margin: 0 auto;\n    padding-bottom: 40px;\n    background-color: #999999;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    color: white;\n    border-right: 2px solid white;\n    border-left: 2px solid white;\n    border-bottom: 2px solid white;\n    min-height: 600px;\n}\n\n", ""]);
 
 // exports
 
@@ -99,7 +99,7 @@ module.exports = function() {
 
 /***/ }),
 
-/***/ 989:
+/***/ 990:
 /***/ (function(module, exports) {
 
 /*
@@ -352,7 +352,7 @@ function updateLink(linkElement, obj) {
 
 /***/ }),
 
-/***/ 993:
+/***/ 994:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(435);
@@ -360,5 +360,5 @@ module.exports = __webpack_require__(435);
 
 /***/ })
 
-},[993]);
+},[994]);
 //# sourceMappingURL=styles.bundle.map

@@ -1,3 +1,10 @@
-<p>
-  game-board works!
-</p>
+<div class="gameBoardDiv">
+  <div class="scoreDisplay" *ngIf="gameInProgress">Score: {{score}}</div>
+  <div class="scoreDisplay" *ngIf="!gameInProgress">Prss any of the arrow buttons to begin</div>
+  <app-gamegrid
+      class="gameGrid"
+      [gridSize]="gridSize"
+      [newSnakePosition]="snakePosition"
+      [foodPosition]="foodPosition">
+  </app-gamegrid>
+</div>

@@ -1,19 +1,23 @@
-<p>
-  Game Over! You got a score of {{score}}
-</p>
 
-<div *ngIf="isInTopTen">
-  Congrats, you are in the top ten
-  Please enter your information below to record your score:
-  <div class="inputRow">
-    <input [(ngModel)]="name" #ctrl="ngModel" required class="scoreInput">
+<div class="gameOverDiv">
+  <div class="scoreMessage">
+    Game Over! You got a score of {{score}}
   </div>
-  <div class="inputRow">
-    <input [(ngModel)]="age" #ctrl="ngModel" required type="number" class="scoreInput">
+  <div *ngIf="isInTopTen" class="gameOverSection">
+    Congrats, you are in the top ten
+    Please enter your information below to record your score:
+    <div class="inputRow">
+      <input [(ngModel)]="name" #ctrl="ngModel" required class="scoreInput" placeholder="Enter your name">
+    </div>
+    <div class="inputRow">
+      <input [(ngModel)]="age" #ctrl="ngModel" required type="number" class="scoreInput" placeholder="Enter your age">
+    </div>
+    <div class="gameOverButton" (click)="submitScore()">Submit Score</div>
   </div>
-  <div class="submitButton" (click)="submitScore()">Submit Score</div>
-</div>
 
-<div *ngIf="!isInTopTen">
-  Sorry, you didn't score high enough for the top ten!
+  <div *ngIf="!isInTopTen" class="gameOverSection">
+    Sorry, you didn't score high enough for the top ten!
+    <div class="gameOverButton" (click)="playAgain()">Try again</div>
+    <div class="gameOverButton" (click)="backToLeaderboard()">Back to Leaderboard</div>
+  </div>
 </div>

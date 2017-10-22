@@ -47,7 +47,6 @@ export class GridPositionService {
     let newFoodPosition = [];
     newFoodPosition[0] = Math.floor(Math.random() * gridSize);
     newFoodPosition[1] = Math.floor(Math.random() * gridSize);
-    console.log(newFoodPosition);
     return newFoodPosition;
   }
 

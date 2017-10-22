@@ -1,10 +1,17 @@
-<h1>
-  Top ten scores
+<div class="leaderBoard">
+  <div class="leaderBoardTitle">Snake Leaderboard:</div>
 
-  <div *ngFor="let score of highScores; let i = index">
-    {{i+1}}.)  {{score.name}}...{{score.age}}...{{score.score}}
+  <div class="leaderBoardRow">
+    <div class="leaderBoardName">Name</div>
+    <div class="leaderBoardAge">Age</div>
+    <div class="leaderBoardScore">Score</div>
   </div>
 
-  <div (click)="playGame()">Try your skill</div>
+  <div *ngFor="let score of highScores; let i = index" class="leaderBoardRow">
+    <div class="leaderBoardName">{{i+1}}.) {{score.name}}</div>
+    <div class="leaderBoardAge">{{score.age}}</div>
+    <div class="leaderBoardScore">{{score.score}}</div>
+  </div>
 
-</h1>
+  <div (click)="playGame()" id="tryButton">Try your skill</div>
+</div>
