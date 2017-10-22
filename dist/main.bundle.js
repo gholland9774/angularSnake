@@ -220,7 +220,7 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(511);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(339);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(242);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(550);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__gridsize_selector_gridsize_selector_component__ = __webpack_require__(556);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__gamegrid_gamegrid_component__ = __webpack_require__(555);
@@ -301,7 +301,7 @@ var AppModule = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(242);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__(401);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__grid_position_service__ = __webpack_require__(362);
@@ -479,7 +479,7 @@ var GameCell = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(242);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__score_data_service_service__ = __webpack_require__(246);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GameOverComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -700,6 +700,7 @@ var GridsizeSelectorComponent = (function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__score_data_service_service__ = __webpack_require__(246);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(171);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HighScoresComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -712,9 +713,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var HighScoresComponent = (function () {
-    function HighScoresComponent(scoreDataService) {
+    function HighScoresComponent(scoreDataService, router) {
         this.scoreDataService = scoreDataService;
+        this.router = router;
     }
     HighScoresComponent.prototype.ngOnInit = function () {
         this.getAllScores();
@@ -733,16 +736,19 @@ var HighScoresComponent = (function () {
             }
         });
     };
+    HighScoresComponent.prototype.playGame = function () {
+        this.router.navigateByUrl('/play');
+    };
     HighScoresComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Component */])({
             selector: 'app-high-scores',
             template: __webpack_require__(720),
             styles: [__webpack_require__(718)]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__score_data_service_service__["a" /* ScoreDataService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__score_data_service_service__["a" /* ScoreDataService */]) === 'function' && _a) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__score_data_service_service__["a" /* ScoreDataService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__score_data_service_service__["a" /* ScoreDataService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* Router */]) === 'function' && _b) || Object])
     ], HighScoresComponent);
     return HighScoresComponent;
-    var _a;
+    var _a, _b;
 }());
 //# sourceMappingURL=/Users/gholland/Documents/Playground/Angular/angularSnake/src/high-scores.component.js.map
 
@@ -809,7 +815,7 @@ module.exports = "<p>\n  Game Over! You got a score of {{score}}\n</p>\n\n<div *
 /***/ 720:
 /***/ (function(module, exports) {
 
-module.exports = "<h1>\n  Top ten scores\n\n  <div *ngFor=\"let score of highScores; let i = index\">\n    {{i+1}}.)  {{score.name}}...{{score.age}}...{{score.score}}\n  </div>\n\n  <a href=\"/play\">Try your skill</a>\n\n</h1>\n"
+module.exports = "<h1>\n  Top ten scores\n\n  <div *ngFor=\"let score of highScores; let i = index\">\n    {{i+1}}.)  {{score.name}}...{{score.age}}...{{score.score}}\n  </div>\n\n  <div (click)=\"playGame()\">Try your skill</div>\n\n</h1>\n"
 
 /***/ }),
 

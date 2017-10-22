@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ScoreDataService } from '../score-data-service.service'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-high-scores',
@@ -9,7 +10,8 @@ import { ScoreDataService } from '../score-data-service.service'
 export class HighScoresComponent implements OnInit {
 
   constructor(
-      private scoreDataService: ScoreDataService
+      private scoreDataService: ScoreDataService,
+      private router: Router
   ) { }
 
   highScores: any[];
@@ -30,6 +32,10 @@ export class HighScoresComponent implements OnInit {
             })
           }
         })
+  }
+
+  playGame() {
+    this.router.navigateByUrl('/play');
   }
 
 }
