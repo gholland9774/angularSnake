@@ -34,25 +34,20 @@ export class GamegridComponent implements OnChanges, OnInit {
       this.onGridSizeChange(gridSize.currentValue);
     }
     if ('newSnakePosition' in changes) {
-      this.updateSnakePosition();
+      this.updateGrid();
     }
     if ('foodPosition' in changes) {
-      this.updateFoodPosition();
+      this.updateGrid();
     }
   }
 
-  updateSnakePosition():void {
+  updateGrid():void {
     this.resetGrid();
     for (let i in this.newSnakePosition){
       let coords = this.newSnakePosition[i];
       this.gameArray[coords[0]][coords[1]] = i=="0"? 2 : 1;
     }
-    console.log(this.foodPosition);
     this.gameArray[this.foodPosition[0]][this.foodPosition[1]] = 3;
-  }
-
-  updateFoodPosition(): void {
-    this.gameArray[this.foodPosition[0], this.foodPosition[1]] = 3;
   }
 
   resetGrid():void {

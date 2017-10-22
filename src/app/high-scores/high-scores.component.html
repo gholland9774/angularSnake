@@ -1,0 +1,10 @@
+<h1>
+  Top ten scores
+
+  <div *ngFor="let score of highScores; let i = index">
+    {{i+1}}.)  {{score.name}}...{{score.age}}...{{score.score}}
+  </div>
+
+  <a href="/play">Try your skill</a>
+
+</h1>

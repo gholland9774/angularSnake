@@ -1,0 +1,19 @@
+<p>
+  Game Over! You got a score of {{score}}
+</p>
+
+<div *ngIf="isInTopTen">
+  Congrats, you are in the top ten
+  Please enter your information below to record your score:
+  <div class="inputRow">
+    <input [(ngModel)]="name" #ctrl="ngModel" required class="scoreInput">
+  </div>
+  <div class="inputRow">
+    <input [(ngModel)]="age" #ctrl="ngModel" required type="number" class="scoreInput">
+  </div>
+  <div class="submitButton" (click)="submitScore()">Submit Score</div>
+</div>
+
+<div *ngIf="!isInTopTen">
+  Sorry, you didn't score high enough for the top ten!
+</div>
