@@ -10,8 +10,8 @@ export class ScoreDataService {
 
   constructor(private http: Http) { }
 
-  private getScoresUrl = 'http://localhost:3000/topScores';
-  private submitHighScore = 'http://localhost:3000/postScore';
+  private getScoresUrl = 'http://ec2-13-58-181-240.us-east-2.compute.amazonaws.com:3000/topScores';
+  private submitHighScore = 'http://ec2-13-58-181-240.us-east-2.compute.amazonaws.com:3000/postScore';
 
   getScores(): Observable<Object>{
     let scores = this.http

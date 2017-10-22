@@ -30,8 +30,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var ScoreDataService = (function () {
     function ScoreDataService(http) {
         this.http = http;
-        this.getScoresUrl = 'http://localhost:3000/topScores';
-        this.submitHighScore = 'http://localhost:3000/postScore';
+        this.getScoresUrl = 'http://ec2-13-58-181-240.us-east-2.compute.amazonaws.com:3000/topScores';
+        this.submitHighScore = 'http://ec2-13-58-181-240.us-east-2.compute.amazonaws.com:3000/postScore';
     }
     ScoreDataService.prototype.getScores = function () {
         var scores = this.http
